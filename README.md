@@ -1,0 +1,2 @@
+# whatspper
+App whatspp auto
