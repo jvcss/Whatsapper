@@ -65,9 +65,9 @@ def get_data():
         print("VERIFIQUE A INTEGRIDADE.----------> NAO é DATAFRAME")
     else:
         df = st.session_state.contatos_salvos#virtual file
-        df_csv = pd.read_csv("data/contatos.csv")#arquivo
+        df_csv = pd.read_csv("contatos.csv")#arquivo
         if st.session_state.contatos_salvos.empty:#se nao tiver virtual file
-            df1 = pd.read_csv("data/contatos.csv")
+            df1 = pd.read_csv("contatos.csv")
             print(f"LISTA VIRTUAL VAZIA {type(df1)}")
             st.session_state.contatos_salvos = df1
             return df1
@@ -81,10 +81,10 @@ def get_data():
             print("VIRTUAL DIFERENTE DA FISICA[ get_data -> ar1 = st.session_state.contatos_salvos DataFrame write contatos.csv ]")
             #print(f"{st.session_state.contatos_salvos}")
             ar1 = st.session_state.contatos_salvos
-            with open('data\contatos.csv', "w", encoding="utf-8") as fd1:
+            with open('contatos.csv', "w", encoding="utf-8") as fd1:
                 for each1 in ar1:
                     fd1.write(f'{each1}\n')
-            with open('data\contatos.csv', "a", encoding="utf-8") as fd2:
+            with open('contatos.csv', "a", encoding="utf-8") as fd2:
                 for each2 in ar1['contatos']:
                     fd2.write(f'\n{each2}\n')
             return df
@@ -92,7 +92,7 @@ def get_data():
 
         else:
             print("NEM IGUAL NEM DIFERENTE, COM ERRO?")
-            df_ = pd.read_csv("data/contatos.csv")
+            df_ = pd.read_csv("contatos.csv")
             return df_
 
 #                       BARRA LATERAL
@@ -196,7 +196,7 @@ def grid(data ):
                 #vars1 = pd.DataFrame()
                 #st.session_state.contatos_salvos = pd.concat([vars1, grid_response['data']['contatos']], axis=0, ignore_index=True)
                 #st.session_state.contatos_salvos = vars1
-                #with open('data\output.csv', 'w', encoding="utf-8") as o:
+                #with open('output.csv', 'w', encoding="utf-8") as o:
                 #    o.write('contatos\n')
                 #    o.write(vars1.to_csv(index=False,header=False ))
                 #    o.truncate()
@@ -269,10 +269,10 @@ if abrir or st.session_state.beta_on == 'BETA':
                     #PEDI PRA ATUALIZAR E VOLTOU COM LISTA VALIDA
                     if st.session_state.contatos_salvos != st.session_state.contatos_salvos.empty():
                         st.session_state['att_all_ctts'] = False
-                        with open('data\contatos.csv', "w", encoding="utf-8") as fileDriver:
+                        with open('contatos.csv', "w", encoding="utf-8") as fileDriver:
                             for each in st.session_state.contatos_salvos:
                                 fileDriver.write(f'{each}\n')
-                        with open('data\contatos.csv', "a", encoding="utf-8") as fileDriver_:
+                        with open('contatos.csv', "a", encoding="utf-8") as fileDriver_:
                             for e_ach in st.session_state.contatos_salvos['contatos']:
                                 fileDriver_.write(f'{e_ach}\n')
         try:
@@ -319,7 +319,7 @@ if abrir or st.session_state.beta_on == 'BETA':
                         st.subheader('Arquivo Contatos')
                         if st.form_submit_button('⟳'):
                             try:
-                                st.write(pd.read_csv('data/contatos.csv'))
+                                st.write(pd.read_csv('contatos.csv'))
                             except Exception as e:
                                 st.write(st.session_state.contatos_salvos)
                             finally:
