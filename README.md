@@ -37,7 +37,7 @@ streamlit run app.py
 
 ### `Importante!`
 
-- Salvamento automático das lista de contatos e conversas, criada no arquivo **contatos.csv**
+- Salvamento automático das lista de **contatos** e **conversas**, criada no arquivo **contatos.csv**
 
 - verificação automática das palavras chave **sair** para inclusão na lista de contatos bloqueados antes de enviar a mensagem
 
@@ -45,7 +45,7 @@ streamlit run app.py
 
 - caso seu Chrome não abra talvez seja porque o drive que utilizo não seja compatível com a sua versão procure a versão do driver compatível com o seu navegador [AQUI](https://chromedriver.chromium.org/downloads)
 
-- Executável em Windows e Linux
+- Executável `Windows` e `Linux`
 
 - Windows permite envio de imagens e textos com edição
 
