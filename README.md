@@ -21,7 +21,7 @@
 
 ### Como rodar?
 
-- caso não tenha instalado o selenium
+- caso não tenha instalado o Selenium
 
 `pip install selenium`
 
@@ -37,8 +37,16 @@ streamlit run app.py
 
 ### `Importante!`
 
-- Salvamento automático da lista de contatos e chats, criada no arquivo **contatos.csv**
-- verificação automatica das palavras chave **sair** para inclusão na lista de contatos bloqueados
-- caso seu chrome não abra talvez seja porque o drive que utilizo não seja compativel com a sua versão procure a versão do driver compativel com o seu navegador [AQUI](https://chromedriver.chromium.org/downloads)
-- para saber a versão do seu chrome é so ir nas configurações no navegador
-- esse app roda no windows e linux com o chrome, em linux não é possivel adicionar imagens
+- Salvamento automático das lista de contatos e conversas, criada no arquivo **contatos.csv**
+
+- verificação automática das palavras chave **sair** para inclusão na lista de contatos bloqueados antes de enviar a mensagem
+
+- Permite atualizar a base de contatos retirando os que foram excluídos após execução
+
+- caso seu Chrome não abra talvez seja porque o drive que utilizo não seja compatível com a sua versão procure a versão do driver compatível com o seu navegador [AQUI](https://chromedriver.chromium.org/downloads)
+
+- Executável em Windows e Linux
+
+- Windows permite envio de imagens e textos com edição
+
+- Linux não permite adicionar imagens na mensagem
