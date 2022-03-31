@@ -3,7 +3,8 @@
   <img src="https://img.icons8.com/clouds/2x/whatsapp.png"/>
   <img src="https://img.icons8.com/nolan/2x/bot.png"/>
   <br/>
-  <b>Whatspper</b>
+  <b>Whatspper©</b>
+  <p>Aplicativo para automatizar Whatsapp®</p>
 </h2>
 
 ## O que é
