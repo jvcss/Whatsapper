@@ -1,19 +1,34 @@
 
 import streamlit as st
-import win32clipboard
+import os
+if os.name == 'nt':
+	import win32clipboard
+	from PIL import Image
+	from base64 import b64decode
+	from io import BytesIO
+	import psutil
+
+	def send_to_clipboard(img_path):
+		image = Image.open(img_path)
+		output = BytesIO()
+		image.convert("RGB").save(output, "BMP")
+		data = output.getvalue()[14:]
+		output.close()
+		win32clipboard.OpenClipboard()
+		win32clipboard.EmptyClipboard()
+		win32clipboard.SetClipboardData(win32clipboard.CF_DIB, data)
+
 import re
-from PIL import Image
-from base64 import b64decode
-from io import BytesIO
+
+
 import pandas as pd
 import strings as literais
 from whats import Cliente
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-import psutil
+
 from streamlit_quill import st_quill as text_editor
 from st_aggrid import AgGrid, DataReturnMode, GridUpdateMode, GridOptionsBuilder
-
 st.set_page_config(
 	 page_title='MKT',
 	 layout='wide',
@@ -25,17 +40,6 @@ st.set_page_config(
 		 'About': "App para automação whatsapp"
 	}
 )
-
-def send_to_clipboard(img_path):
-	image = Image.open(img_path)#path
-	output = BytesIO()
-	image.convert("RGB").save(output, "BMP")
-	data = output.getvalue()[14:]
-	#print(data)
-	output.close()
-	win32clipboard.OpenClipboard()
-	win32clipboard.EmptyClipboard()
-	win32clipboard.SetClipboardData(win32clipboard.CF_DIB, data)
 
 if "contatos_salvos" not in st.session_state: st.session_state["contatos_salvos"] = pd.DataFrame([''], columns=['contatos'])
 
@@ -76,6 +80,23 @@ available_themes = ["streamlit", "light", "dark", "blue", "fresh", "material"]
 selected_theme = st.sidebar.selectbox("Tema", available_themes)
 
 st.session_state["wusername"] = st.sidebar.text_input("Usuário", placeholder='SouCliente', help='Nome do usuário Windows C:\\Users\\SouCliente\\ ')
+if st.sidebar.button('Apagar Arquivos'):
+	try:
+		os.remove("contatos.csv")
+		os.remove("contatos_e_status.csv")
+		st.info('Contatos Apagados')
+	except:
+		st.info('não há mais arquivos para deletar')
+if st.sidebar.button('Consulta Conta Whatsapp'):
+	opts = Options()
+	moss_do_ceu = f'--user-data-dir=C:\\Users\\Victor\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 4'
+	#opts.add_experimental_option('excludeSwitches', ['enable-logging'])
+	opts.add_argument('log-level=3')
+	opts.add_argument(moss_do_ceu)#(fr"--user-data-dir=C:\\Users\\{st.session_state.pc_user}\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 4")
+	opts.add_experimental_option("detach", True)
+	motorista = webdriver.Chrome(options=opts)
+	cliente = Cliente(motorista)
+	cliente.consultar()
 
 #endregion
 

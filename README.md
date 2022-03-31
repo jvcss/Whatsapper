@@ -50,4 +50,4 @@ streamlit run app.py
 
 - Chrome precisa de uma versão do driver compatível com o seu navegador [Baixar](https://chromedriver.chromium.org/downloads)
 
-![Whatspper](images/plao_fundo_info_whatspper_automation.jpg)
+![Whatspper](images/plao_fundo_info_whatspper_automation.jpeg)
