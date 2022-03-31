@@ -49,6 +49,7 @@ if "wusername" not in st.session_state: st.session_state["wusername"] = "Public"
 
 if "black_list" not in st.session_state: st.session_state["black_list"] =  []
 
+if "flagger_typing" not in st.session_state: st.session_state["flagger_typing"] = True
 #if st.sidebar.button('copiar'):
 #    send_to_clipboard(f'imagem-0.jpeg')
 
@@ -221,20 +222,25 @@ if abrir or st.session_state.beta_on == 'BETA':
 						cliente = Cliente(motorista)
 						cliente.envia_msg(st.session_state.contatos_salvos,content)
 						st.subheader("Resultado")
-						
+						st.session_state["flagger_typing"] = True
+					#flaggerTyping = True
 					if content:
+						#in case image already placed in the texteditor
 						if len(listar_imgs) > 0:
 							pos = 0
-							for _ in listar_imgs:	#cria as imagens localmente
-								with open(f"imagem-{pos}.{listar_imgs[pos][0]}", 'wb') as wrb:
-									wrb.write(b64decode(listar_imgs[pos][1]))
-								send_to_clipboard(f"imagem-0.png")
-								
-								pos += 1
+							if st.session_state["flagger_typing"]:#enquanto tiver sem imagem vai ser verdadeiro e pode entrar
+								for _ in listar_imgs:	#cria as imagens localmente
+									with open(f"imagem-{pos}.{listar_imgs[pos][0]}", 'wb') as wrb:
+										wrb.write(b64decode(listar_imgs[pos][1]))
+									send_to_clipboard(f"imagem-0.png")
+									
+									pos += 1
+								st.session_state["flagger_typing"] = False
 						else:
 							st.markdown('____')
 							st.markdown(content, unsafe_allow_html=True)
 							st.markdown('____')
+							st.session_state["flagger_typing"] = True
 			with col2:
 				try:
 					grade()
