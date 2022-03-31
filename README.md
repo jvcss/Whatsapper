@@ -21,7 +21,7 @@
 
 ### Como Executar
 
-- caso não tenha instalado o Selenium
+- caso não tenha instalado as bibliotecas necessárias
 
 `pip install selenium`
 
