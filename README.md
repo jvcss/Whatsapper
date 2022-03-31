@@ -38,6 +38,7 @@ streamlit run app.py
 ### `Importante!`
 
 - Salvamento automático da lista de contatos e chats, criada no arquivo **contatos.csv**
+- verificação automatica das palavras chave **sair** para inclusão na lista de contatos bloqueados
 - caso seu chrome não abra talvez seja porque o drive que utilizo não seja compativel com a sua versão procure a versão do driver compativel com o seu navegador [AQUI](https://chromedriver.chromium.org/downloads)
 - para saber a versão do seu chrome é so ir nas configurações no navegador
 - esse app roda no windows e linux com o chrome, em linux não é possivel adicionar imagens
