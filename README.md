@@ -8,7 +8,7 @@
 
 ## O que é?
 
-- Aplicativo Visual para envio de menssagens automaticas no whatsapp.
+- Aplicativo Visual para envio de menssagens automáticas no whatsapp.
 
 ## O que utiliza?
 
