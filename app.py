@@ -212,11 +212,7 @@ if abrir or st.session_state.beta_on == 'BETA':
 					
 					listar_imgs = re.findall( r'src="data:image/(.*?);base64,(.*?)"', fr'{content}')
 					enviar =  st.button('Enviar')
-					#pos_ = 0
-					#for _ in listar_imgs:
-						#nome_img = str(f"imagem-{pos_}.{listar_imgs[pos_][0]}")
-						#print(nome_img)
-						#pos_ += 1
+					
 					if enviar:
 						motorista = webdriver.Chrome(options=opts)#options=opts ---headless
 						cliente = Cliente(motorista)
@@ -235,7 +231,7 @@ if abrir or st.session_state.beta_on == 'BETA':
 									send_to_clipboard(f"imagem-0.png")
 									
 									pos += 1
-								st.session_state["flagger_typing"] = False
+								st.session_state["flagger_typing"] = False#reset state
 						else:
 							st.markdown('____')
 							st.markdown(content, unsafe_allow_html=True)
