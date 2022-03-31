@@ -51,4 +51,4 @@ streamlit run app.py
 
 - Linux não permite adicionar imagens na mensagem
 
-![Whatspper](Images/plao_fundo_info_whatspper_automation.jpg)
+![Whatspper](images/plao_fundo_info_whatspper_automation.jpg)
