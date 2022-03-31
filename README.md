@@ -6,11 +6,11 @@
   <b>Whatspper</b>
 </h2>
 
-## O que é?
+## O que é
 
 - Aplicativo Visual para envio de menssagens automáticas no whatsapp.
 
-## O que utiliza?
+## O que utiliza
 
 - **Ferramentas**
   - Python
