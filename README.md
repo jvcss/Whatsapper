@@ -39,7 +39,7 @@ streamlit run app.py
 
 - Cria **contatos.csv** automático a partir da lista de **contatos** e **conversas**
 
-- verificação automática das palavras chave **sair** para inclusão na lista de contatos bloqueados antes de enviar a mensagem
+- Verificação automática das palavras chave **sair** para inclusão na lista de contatos bloqueados antes de enviar a mensagem
 
 - Permite atualizar a base de contatos retirando os que foram excluídos após execução
 
