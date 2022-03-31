@@ -43,7 +43,7 @@ streamlit run app.py
 
 - Permite atualizar a base de contatos retirando os que foram excluídos após execução
 
-- caso seu Chrome não abra talvez seja porque o drive que utilizo não seja compatível com a sua versão procure a versão do driver compatível com o seu navegador [AQUI](https://chromedriver.chromium.org/downloads)
+- Chrome precisa de uma versão do driver compatível com o seu navegador [Baixar](https://chromedriver.chromium.org/downloads)
 
 - Executável `Windows` e `Linux`
 
