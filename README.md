@@ -26,9 +26,9 @@
 `pip install selenium`
 
 ```bash
-git clone https://github.com/jvcss/whatsper.git
+git clone https://github.com/jvcss/whatspper.git
 
-cd Chatbot-whatsapp
+cd whatspper
 
 streamlit run app.py
 ```
