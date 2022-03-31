@@ -218,25 +218,28 @@ if abrir or st.session_state.beta_on == 'BETA':
 						cliente = Cliente(motorista)
 						cliente.envia_msg(st.session_state.contatos_salvos,content)
 						st.subheader("Resultado")
-						st.session_state["flagger_typing"] = True
+						#st.session_state["flagger_typing"] = True
 					#flaggerTyping = True
-					if content:
+					#if content:
 						#in case image already placed in the texteditor
-						if len(listar_imgs) > 0:
-							pos = 0
-							if st.session_state["flagger_typing"]:#enquanto tiver sem imagem vai ser verdadeiro e pode entrar
-								for _ in listar_imgs:	#cria as imagens localmente
-									with open(f"imagem-{pos}.{listar_imgs[pos][0]}", 'wb') as wrb:
-										wrb.write(b64decode(listar_imgs[pos][1]))
-									send_to_clipboard(f"imagem-0.png")
-									
-									pos += 1
-								st.session_state["flagger_typing"] = False#reset state
-						else:
-							st.markdown('____')
-							st.markdown(content, unsafe_allow_html=True)
-							st.markdown('____')
-							st.session_state["flagger_typing"] = True
+					if len(listar_imgs) > 0:
+						pos = 0
+						if st.session_state["flagger_typing"]:#enquanto tiver sem imagem vai ser verdadeiro e pode entrar
+							for _ in listar_imgs:	#cria as imagens localmente
+								with open(f"imagem-{pos}.{listar_imgs[pos][0]}", 'wb') as wrb:
+									wrb.write(b64decode(listar_imgs[pos][1]))
+								send_to_clipboard(f"imagem-0.png")
+								
+								pos += 1
+							if st.session_state["flagger_typing"] == True:
+								st.session_state["flagger_typing"] = not st.session_state["flagger_typing"]#reset state
+							print (f'SAIDA <DEVE SER FALSE >{st.session_state["flagger_typing"]}')
+					else:
+						st.markdown('____')
+						st.markdown(content, unsafe_allow_html=True)
+						st.markdown('____')
+						st.session_state["flagger_typing"] = not st.session_state["flagger_typing"]
+						print (f'loop sem imagem em anexo <DEVE SER FALSE >{st.session_state["flagger_typing"]}')
 			with col2:
 				try:
 					grade()
