@@ -32,8 +32,6 @@ cd whatspper
 
 streamlit run app.py
 ```
-### abra a interface com
-> $ streamlit run app.py
 
 ### `Importante!`
 
