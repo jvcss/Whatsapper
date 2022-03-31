@@ -19,7 +19,7 @@
   - Streamlit
   - Regular Expression
 
-### Como rodar?
+### Como Executar
 
 - caso não tenha instalado o Selenium
 
@@ -32,7 +32,7 @@ cd whatspper
 
 streamlit run app.py
 ```
-- abra a interface com
+### abra a interface com
 > $ streamlit run app.py
 
 ### `Importante!`
