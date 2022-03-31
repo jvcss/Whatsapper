@@ -50,3 +50,5 @@ streamlit run app.py
 - Windows permite envio de imagens e textos com edição
 
 - Linux não permite adicionar imagens na mensagem
+
+![Whatspper](Images/plao_fundo_info_whatspper_automation.jpg)
