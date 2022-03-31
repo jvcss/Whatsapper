@@ -1,7 +1,7 @@
 
 <h2 align="center">
-  <img src="https://img.icons8.com/dusk/128/000000/whatsapp.png"/>
-  <img src="https://img.icons8.com/dusk/128/000000/bot.png"/>
+  <img src="https://img.icons8.com/clouds/2x/whatsapp.png"/>
+  <img src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/2x/external-bot-robotics-icons-flaticons-lineal-color-flat-icons.png"/>
   <br/>
   <b>Whatspper</b>
 </h2>
