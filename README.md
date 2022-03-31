@@ -42,12 +42,12 @@ streamlit run app.py
 
 - Permite atualizar a base de contatos retirando os que foram excluídos após execução
 
-- Chrome precisa de uma versão do driver compatível com o seu navegador [Baixar](https://chromedriver.chromium.org/downloads)
-
 - Executável `Windows` e `Linux`
 
 - Windows permite envio de imagem e textos com edição
 
 - Linux não permite adicionar imagem na mensagem
+
+- Chrome precisa de uma versão do driver compatível com o seu navegador [Baixar](https://chromedriver.chromium.org/downloads)
 
 ![Whatspper](images/plao_fundo_info_whatspper_automation.jpg)
