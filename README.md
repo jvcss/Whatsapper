@@ -6,11 +6,11 @@
   <b>Whatspper</b>
 </h2>
 
-### O que é?
+## O que é?
 
 - Interface para envio de menssagens automaticas no whatsapp.
 
-### O que utiliza?
+## O que utiliza?
 
 - **Ferramentas**
   - Python
@@ -19,7 +19,7 @@
   - Streamlit
   - Regular Expression
 
-### Como Executar
+## Como Executar
 
 - caso não tenha instalado as bibliotecas necessárias
 
@@ -33,7 +33,7 @@ cd whatspper
 streamlit run app.py
 ```
 
-### `Funcionalidades do Aplicativo`
+## Funcionalidades do Aplicativo
 
 - Cria **contatos.csv** automático a partir da lista de **contatos** e **conversas**
 
