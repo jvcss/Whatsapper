@@ -33,7 +33,7 @@ cd whatspper
 streamlit run app.py
 ```
 
-### `Fluxo do Aplicativo`
+### `Funcionalidades do Aplicativo`
 
 - Cria **contatos.csv** automático a partir da lista de **contatos** e **conversas**
 
