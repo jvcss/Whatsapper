@@ -7,34 +7,34 @@
   <p>Aplicativo para automatizar Whatsapp</p>
 </h2>
 
-## O que é
+## What it is
 
-- Aplicativo Visual para envio de menssagens automáticas no whatsapp.
+- Visual app to send message automatically with whatsapp.
 
-## O que utiliza
+## Dependencies
 
-- **Ferramentas**
+- **PIP Install**
   - Python
   - Selenium
   - Chromedriver
   - Streamlit
   - Regular Expression
 
-## Como Executar
+## How to play
 
-- caso não tenha instalado as bibliotecas necessárias
+- Case you don't have the necessary libraries
 
-`pip install selenium`
+`pip install requirements.txt`
 
 ```bash
-git clone https://github.com/jvcss/whatspper.git
+git clone https://github.com/jvcss/whatsapper.git
 
-cd whatspper
+cd whatsapper
 
 streamlit run app.py
 ```
 
-## Funcionalidades do Aplicativo
+##  Log
 
 - Cria **contatos.csv** automático a partir da lista de **contatos** e **conversas**
 
