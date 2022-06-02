@@ -4,7 +4,7 @@
   <img src="https://img.icons8.com/nolan/2x/bot.png"/>
   <br/>
   <b>Whatsapper</b>
-  <p>Aplicativo para automatizar Whatsapp</p>
+  <p>Automate Whatsapp</p>
 </h2>
 
 ## What it is
@@ -22,7 +22,7 @@
 
 ## How to play
 
-- Case you don't have the necessary libraries
+- Download dependencies
 
 `pip install requirements.txt`
 
@@ -33,21 +33,19 @@ cd whatsapper
 
 streamlit run app.py
 ```
-
-##  Log
-
-- Cria **contatos.csv** automático a partir da lista de **contatos** e **conversas**
-
-- Verificação automática das palavras chave **sair** para inclusão na lista de contatos bloqueados antes de enviar a mensagem
-
-- Permite atualizar a base de contatos retirando os que foram excluídos após execução
-
-- Executável `Windows` e `Linux`
-
-- Windows permite envio de imagem e textos com edição
-
-- Linux não permite adicionar imagem na mensagem
-
-- Chrome precisa de uma versão do driver compatível com o seu navegador [Baixar](https://chromedriver.chromium.org/downloads)
-
 ![Whatspper](images/plao_fundo_info_whatspper_automation.jpeg)
+
+##  Version 1.0.0
+
+- Automatically read **contacts**
+
+- Check opt-out variable
+
+- Allow edit contacts table visual
+
+- Executable `Windows` and `Linux`
+
+- Send images and allow edit text
+
+- Chrome needs a driver version compatible with your browser [Download](https://chromedriver.chromium.org/downloads)
+
