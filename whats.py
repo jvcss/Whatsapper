@@ -1,6 +1,7 @@
 
 import strings
 import re
+import urllib.parse
 import os
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
@@ -10,7 +11,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.remote.command import Command
 import time
-from emotions import compara_com_emoji
+#from emotions import compara_com_emoji
 from contextlib import contextmanager
 @contextmanager
 def try_catch(fail_info):
@@ -20,11 +21,27 @@ def try_catch(fail_info):
 		print(f"{fail_info}")
 		with open('unique_out.csv', 'a') as uf:
 			uf.write(f'{fail_info}\n')
-    #else:
-        #print("case everthig works inside the with")
-    #finally:
-        #print("FINAL always")
-        # whatever your common handling is
+	#else:
+		#print("case everthig works inside the with")
+	#finally:
+		#print("FINAL always")
+		# whatever your common handling is
+
+def html_to_url_wppedit(raw_html):
+	negrito = re.compile('(<strong>|</strong>)')
+	clean_negrito_text = negrito.sub('*', raw_html)
+	italico = re.compile('(<em>|</em>)')
+	clean_negrito_text = italico.sub('_', clean_negrito_text)
+	cutted = re.compile('(<s>|</s>)')
+	clean_negrito_text = cutted.sub('~', clean_negrito_text)
+	monoletter = re.compile(r'(<span class="ql-font-monospace">|</span>)')
+	clean_negrito_text = monoletter.sub('```', clean_negrito_text)
+	new_line = re.compile(r'(<br>)')
+	clean_negrito_text = new_line.sub('\n', clean_negrito_text)
+	CLEANR = re.compile('<.*?>')
+	cleantext = re.sub(CLEANR, '', clean_negrito_text)
+	cleantext = urllib.parse.quote(cleantext)
+	return cleantext
 
 def html_to_wppedit(raw_html):
 	#image_tag = re.compile(r'<img.*?/>').search(raw_html).group()
@@ -83,6 +100,7 @@ def nome_localizado(texto):
 	except Exception as e: 
 		print(f"FALHA NO REGULAR EXPRESSION {e}")
 
+#OBSOLETA
 def extrair_info_ultima_conversa(texto):
 	try:
 		info_last_talk = re.findall(r'<div class="_1i_wG">(.*?)</div>',texto)
@@ -252,10 +270,13 @@ class Cliente:
 		lista_negra = []
 		listar_imgs = re.findall( r'src="data:image/(.*?);base64,(.*?)"', fr'{mensagem}')
 		#remove image tag
-		image_tag = re.compile(r'<img.*?>').search(mensagem).group()
-		mensagem = mensagem.replace(image_tag, '') 
+		try:
+			image_tag = re.compile(r'<img.*?>').search(mensagem).group()
+			mensagem = mensagem.replace(image_tag, '')
+		except AttributeError:
+			print("No image tag found in message.")
 
-		texto_p_enviar = html_to_wppedit(mensagem)
+		texto_p_enviar = html_to_url_wppedit(mensagem)
 		#lista_imgs_ext = []
 		if os.name == 'nt':
 
@@ -365,46 +386,34 @@ class Cliente:
 				while ate_o_fim:
 					if contagem >= len(contatos_['contatos']) - 1: ate_o_fim = False
 					try:
-
-						btn_search = wait.until(EC.presence_of_element_located(GetLocator.SEARCH_INPUT))
-						btn_search.click()
-
-						btn_search.send_keys(contatos_['contatos'][contagem])
-
+						#time.sleep(999)
+						# https://web.whatsapp.com/send/?text=O
+						url_to_send = f'https://web.whatsapp.com/send/?text={texto_p_enviar}'
+						self.google.get(url_to_send)
+						time.sleep(3)
+						#busca contato
+						btn_busca = wait.until(EC.presence_of_element_located((GetLocator.BOTAO_BUSCA_CARD)))
+						btn_busca.click()
+						btn_busca.send_keys(contatos_['contatos'][contagem])
+						ActionChains(self.google).send_keys(Keys.TAB).perform()
+						time.sleep(2)
+						card_contato = wait.until(EC.presence_of_element_located((GetLocator.BOTAO_CONTATO_CARD)))
+						card_contato.click()
 						time.sleep(1)
-						btn_search.send_keys(Keys.ARROW_DOWN)
-						ctt_selected = wait.until(EC.presence_of_element_located((By.CLASS_NAME, '_2_TVt')))
-						ctt_selected.click()
-						selected_name = nome_localizado(str(ctt_selected.get_attribute('innerHTML')))
-						info_ultimo_contato = extrair_info_ultima_conversa(str(ctt_selected.get_attribute('innerHTML')))
-
-						lista_contatos_info.append(str(info_ultimo_contato))
-						lista_contatos_.append(str(selected_name).replace(',', ''))
-
-						btn_clear = wait.until(EC.presence_of_element_located(GetLocator.CLEAR_BUTTON))
-						btn_clear.click()
-
+						btn_envia_card = wait.until(EC.presence_of_element_located((GetLocator.BOTAO_ENVIA_CARD)))
+						btn_envia_card.click()
 						time.sleep(1)
-
-						try:
-							espaco_enviar = wait.until(EC.presence_of_element_located(GetLocator.TEXT_BOX_CHAT))
-							for part in texto_p_enviar.split('/n'):
-								try:
-									espaco_enviar.send_keys(texto_p_enviar)
-								except: pass
-							box_buscador = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[2]/button')))
-							box_buscador.click()
-						except Exception as e:
-							time.sleep(1)#print(f'FALHA AO ABRIR CHAT {e}')
+						btn_envia = wait.until(EC.presence_of_element_located((GetLocator.BOTAO_ENVIA_TXT)))
+						btn_envia.click()
+						#ENVIA SEM IMAGEM
+						#proximo contato +1
+						lista_contatos_.insert(0, contatos_['contatos'][contagem])
 					except Exception as e:
-						print(f"{contatos_['contatos'][contagem]}")
-
+						print(f"::ERRO:: contato {contatos_['contatos'][contagem]} ::ERRO::")
 					contagem +=1
 					time.sleep(1)
 				self.google.quit()
-			
-				return lista_contatos_info, lista_contatos_, lista_negra
-			#self.google.maximize_window()
+				return lista_contatos_
 		elif os.name == 'posix':
 			wait = WebDriverWait(self.google, 5)
 			contagem = 0
@@ -703,7 +712,7 @@ class Cliente:
 											part_encoded = part.encode('utf-8')
 											
 											emojis_usados_na_part = []
-											emojis_usados_na_part = compara_com_emoji(part_encoded)
+											#emojis_usados_na_part = compara_com_emoji(part_encoded)
 											for pieces in emojis_usados_na_part:
 												if type(pieces) == bytes:
 													ActionChains(self.google).send_keys(f':{pieces}').perform()
@@ -764,9 +773,7 @@ class GetLocator(object):
 	"""
 		span: TEXT 'beta'
 	"""
-	
 	BTN_CHAT = (By.XPATH, '//*[@id="side"]/header/div[2]/div/span/div[2]/div')
-	
 	"""
 		button: DIV
 	"""
@@ -776,30 +783,23 @@ class GetLocator(object):
 		//*[@id="app"]/div[1]/div[1]/div[2]/div[1]/span/div[1]/span/div[1]/div[2]/div[2]
 	"""
 	CTT_BLOC = (By.XPATH , '//*[@id="app"]/div[1]/div[1]/div[2]/div[1]/span/div[1]/span/div[1]/div[2]/div[2]')
-
 	"""
 		/html/body/div[1]/div/div/div[3]/div/div[1]/div/div/div[2]/div/div[2]
 		//*[@id="side"]/div[1]/div/label/div/div[2]
 	"""
 	SEARCH_INPUT = (By.XPATH, '//*[@id="side"]/div[1]/div/div/div[2]/div/div[2]')
-
 	"""
 		
 	"""
 	CHAT_BLOC = (By.XPATH, '//*[@id="pane-side"]/div[2]')
-
 	"""
 		/html/body/div[1]/div/div/div[3]/div/div[1]/div/div/button
 	"""
 	BACK_BTN = (By.XPATH, '//*[@id="side"]/div[1]/div/div/button')
-	
-
 	"""
 		/html/body/div[1]/div/div/div[3]/div/div[1]/div/div/span/button
 	"""
 	CLEAR_BUTTON = (By.XPATH, '//*[@id="side"]/div[1]/div/div/span/button')
-
-
 	"""
 	  							/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div
 	"""
@@ -807,16 +807,10 @@ class GetLocator(object):
 	TEXT_BOX_CHAT2 = (By.XPATH,'/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div/p')
 	TEXT_BOX_CHAT3 = (By.XPATH,'/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div')
 	TEXT_BOX_CHAT4 = (By.XPATH,'/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]/div')
-
-
 	"""
 
 	"""
 	ENTRADA_ENVIAR_MSG = (By.XPATH, '/html/body/div[1]/div[1]/div[1]/div[2]/div[2]/span/div[1]/span/div[1]/div/div[2]/div/div[1]/div[3]/div/div/div[2]/div[1]/div[2]')
-
-
-
-
 	"""
 		//*[@id="main"]/div[3]/div/div[2]/div[3]
 		/html/body/div[1]/div/div/div[4]/div/div[2]
@@ -849,4 +843,18 @@ class GetLocator(object):
 	"""
 	BOTAO_ENVIAR_TXT = (By.XPATH, '/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[2]/button/span')
 
+	"""
 	
+	"""
+	BOTAO_BUSCA_CARD = (By.XPATH, '/html/body/div[1]/div/span[2]/div/div/div/div/div/div/div/div[1]/div/div/div[2]/div/div[2]')
+	"""
+	
+	"""
+	BOTAO_CONTATO_CARD = (By.XPATH,'/html/body/div[1]/div/span[2]/div/div/div/div/div/div/div/div[2]/div/div/div/div[2]/button')
+
+	"""
+	"""
+	BOTAO_ENVIA_CARD = (By.XPATH, '/html/body/div[1]/div/span[2]/div/div/div/div/div/div/div/span/div/div/div')
+	"""
+	"""
+	BOTAO_ENVIA_TXT = (By.XPATH, '/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[2]/button')

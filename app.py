@@ -5,7 +5,6 @@ if os.name == 'nt':
 	from PIL import Image
 	from base64 import b64decode
 	from io import BytesIO
-	import psutil
 
 	def send_to_clipboard(img_path):
 		image = Image.open(img_path)
@@ -16,7 +15,6 @@ if os.name == 'nt':
 		win32clipboard.OpenClipboard()
 		win32clipboard.EmptyClipboard()
 		win32clipboard.SetClipboardData(win32clipboard.CF_DIB, data)
-
 import re
 import pandas as pd
 import strings as literais
@@ -64,8 +62,6 @@ escolha_de_navegador = st.sidebar.radio('', ['Gecko', 'Chromium'], 0)
 
 st.session_state["swtich_browser"] = st.sidebar.button("Login")#True#
 
-
-
 if escolha_de_navegador == 'Gecko':
 	from selenium.webdriver.firefox.options import Options
 	from selenium.webdriver.firefox.service import Service
@@ -74,18 +70,12 @@ if escolha_de_navegador == 'Gecko':
 	opts.set_preference("dom.webnotifications.enabled", False);
 	opts.add_argument(f'{st.session_state["browser_path"]}')
 	srvc = Service(r'geckodriver.exe')
-	#motorista = webdriver.Firefox(service=srvc, options=opts)
-	#cliente = Cliente(motorista)
-
 elif escolha_de_navegador == 'Chromium':
 	from selenium.webdriver.chrome.options import Options
 	opts = Options()
 	opts.add_argument('Log-Level=3')
 	opts.add_experimental_option('excludeSwitches', ['enable-logging'])
 	opts.add_argument(fr'--user-data-dir=C:\Users\{st.session_state["pc_user"]}\AppData\Local\Google\Chrome\User Data\{st.session_state["chrome_user_name_path"]}')
-	#opts.add_argument('--headless')
-	#motorista = webdriver.Chrome(options=opts)
-	#cliente = Cliente(motorista)
 
 try:
 	if st.session_state.contatos_salvos.empty:
@@ -94,19 +84,7 @@ except Exception as e:
 	st.info('A lista Online está denificada. Recarregue a página')
 	st.sidebar.info(f"Versão {st.session_state['beta_on']}")
 
-#st.sidebar.markdown('____')
-
 if st.sidebar.button('Consultar'):
-	
-	#profile_path = 
-	#opts = Options()
-	#opts.add_argument("-profile")
-	#opts.add_argument('log-level=3')
-	#opts.set_preference("dom.webnotifications.enabled", False);
-	#opts.add_argument("dom.webnotifications.enabled", False);
-	#opts.add_argument(r"C:\Users\Victor\AppData\Roaming\Mozilla\Firefox\Profiles\027qdkr7.default-release")
-	
-	#srvc = Service(r'C:\Users\Victor\Notebook\AbsolutApp\geckodriver.exe')
 	if escolha_de_navegador == 'Gecko':
 		motorista = webdriver.Firefox(service=srvc,options=opts)
 		cliente = Cliente(motorista)
@@ -115,14 +93,6 @@ if st.sidebar.button('Consultar'):
 		motorista = webdriver.Chrome(options=opts)
 		cliente = Cliente(motorista)
 		cliente.consultar()
-	
-
-	#moss_do_ceu = f'--user-data-dir=C:\\Users\\Victor\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\s2wipvcb.Absolut'
-	#opts.add_experimental_option('excludeSwitches', ['enable-logging'])
-	#opts.add_argument('log-level=3')
-	#opts.add_argument(moss_do_ceu)#(fr"--user-data-dir=C:\\Users\\{st.session_state.pc_user}\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 4")
-	#opts.add_experimental_option("detach", True)
-	#profile  = webdriver.Chrome(options=opts) 
 st.sidebar.markdown('____')
 st.sidebar.subheader('Lista Contatos Online')
 st.sidebar.write(st.session_state.contatos_salvos)
@@ -247,30 +217,20 @@ def main_call():
 							html=caixa.checkbox("Entregar como HTML", True),
 							readonly=caixa.checkbox("Apenas leitura", False),
 							key="quill",)
-
+							
 						if os.name == 'nt':
 							listar_imgs = re.findall( r'src="data:image/(.*?);base64,(.*?)"', fr'{content}')
 						enviar =  st.button('Enviar')
 
 						if enviar:
-							
-							#opts = Options()
-							#opts.add_argument("-profile")
-							#opts.add_argument('log-level=3')
-							#opts.set_preference("dom.webnotifications.enabled", False);
-							#opts.add_argument(r"C:\Users\Victor\AppData\Roaming\Mozilla\Firefox\Profiles\027qdkr7.default-release")
-							#srvc = Service(r'C:\Users\Victor\Notebook\AbsolutApp\geckodriver.exe')
 							if escolha_de_navegador == 'Gecko':
 								motorista = webdriver.Firefox(service=srvc,options=opts)
-							#motorista = webdriver.Chrome(options=opts)
 								cliente = Cliente(motorista)
 							else:
 								motorista = webdriver.Chrome(options=opts)
 								cliente = Cliente(motorista)
-
-							st.session_state["ultima_conversa"], 
-							st.session_state["contatos_list"], 
-							st.session_state["black_list"] = cliente.envia_msg_fake(st.session_state.contatos_salvos,content)
+							
+							st.session_state["contatos_list"] = cliente.envia_msg(st.session_state.contatos_salvos,content)
 
 							dataframe = pd.DataFrame(st.session_state['contatos_salvos'], index=None)
 							dataframe['contatos'] = st.session_state["contatos_list"]
@@ -284,16 +244,13 @@ def main_call():
 								contatos_permitidos = set(list(st.session_state.contatos_salvos['contatos'])) -  set (list(st.session_state.black_list))
 								for ctt in contatos_permitidos:
 									f2.write(ctt + '\n')
-
 							st.experimental_rerun()
-						
+
 						if content:
 							if os.name == 'nt':
-
 								if len(listar_imgs) > 0 and not enviar:
-									
 									po_si = 0
-									for _ in listar_imgs:# os.listdir(os.getcwd()):
+									for _ in listar_imgs:
 										if os.path.exists(os.path.abspath(f"imagem-{0}.{listar_imgs[po_si][0]}")) is True:
 											os.remove(os.path.abspath(f"imagem-{0}.{listar_imgs[po_si][0]}"))
 											po_si += 1
