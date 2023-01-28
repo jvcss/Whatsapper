@@ -618,11 +618,7 @@ def remove_repeted():
 							#time.sleep(100)
 							exiting_no_content = wait_short.until(EC.presence_of_element_located((By.XPATH,'//*[@id="main"]/div[3]/div/div[2]/div[2]/div[2]/div/div/div[1]/span/div/span')))
 							#print(f"\n{exiting_no_content.get_attribute('innerHTML')}\n")
-							if strings.svg_lock == exiting_no_content.get_attribute('innerHTML'):
-								#print ("\nthey are equals, found\n")	
-								already_sending_call_back_no_texts = False#					CONVERSA LIMPA
-							else: #
-								print('erro reading lock')
+							
 							#already_sending_call_back_no_texts = content_localizado(str(exiting_no_content.get_attribute('innerHTML')))
 							#already_sending = False
 							#mensagem_strip = mensagem

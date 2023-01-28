@@ -50,15 +50,21 @@ if "ultima_conversa" not in st.session_state: st.session_state["ultima_conversa"
 
 if "escolhe_browser" not in st.session_state: st.session_state["swtich_browser"] = ""
 
+if "driver_id" not in st.session_state: st.session_state["driver_id"] = ""
 
 if "pc_user" not in st.session_state: st.session_state["pc_user"] = "vitim"
 
-if "browser_path" not in st.session_state: st.session_state["browser_path"] = fr"C:\Users\{st.session_state['pc_user']}\AppData\Roaming\Mozilla\Firefox\Profiles\eyhgqphi.default-release"
+if "browser_path" not in st.session_state: st.session_state["browser_path"] = fr"C:\Users\{st.session_state['pc_user']}\AppData\Roaming\Mozilla\Firefox\Profiles\{st.session_state['driver_id']}"
 
-if "chrome_user_name_path" not in st.session_state: st.session_state["chrome_user_name_path"] = 'Profile 1'
 #barra lateral
 #region
 escolha_de_navegador = st.sidebar.radio('', ['Gecko', 'Chromium'], 0)
+st.sidebar.markdown('____')
+st.session_state["pc_user"] = st.sidebar.text_input('Nome Usuario', value='vitim')
+st.session_state["driver_id"] = st.sidebar.text_input('Driver ID', value='eyhgqphi.default-release',help="Para Chrome o nome da pasta perfil de usuario 'Profile 1'\nPara Firefox o nome da pasta gerada 'r4nd0m.default-release'")
+st.sidebar.markdown('____')
+
+st.session_state["browser_path"] = fr"C:\Users\{st.session_state['pc_user']}\AppData\Roaming\Mozilla\Firefox\Profiles\{st.session_state['driver_id']}"
 
 st.session_state["swtich_browser"] = st.sidebar.button("Login")#True#
 
@@ -75,7 +81,7 @@ elif escolha_de_navegador == 'Chromium':
 	opts = Options()
 	opts.add_argument('Log-Level=3')
 	opts.add_experimental_option('excludeSwitches', ['enable-logging'])
-	opts.add_argument(fr'--user-data-dir=C:\Users\{st.session_state["pc_user"]}\AppData\Local\Google\Chrome\User Data\{st.session_state["chrome_user_name_path"]}')
+	opts.add_argument(fr'--user-data-dir=C:\Users\{st.session_state["pc_user"]}\AppData\Local\Google\Chrome\User Data\{st.session_state["driver_id"]}')
 
 try:
 	if st.session_state.contatos_salvos.empty:
@@ -99,7 +105,6 @@ st.sidebar.write(st.session_state.contatos_salvos)
 st.sidebar.markdown('____')
 st.sidebar.subheader('Lista Negra')
 st.sidebar.write(st.session_state['black_list'])
-st.sidebar.markdown('____')
 
 enable_selection = st.sidebar.checkbox("Selecionar Contatos", value=True, help='Para poder deletar contatos é necessário permitir a seleção')
 selection_mode = st.sidebar.radio("Modo de Seleça", ['single','multiple'], help='Selecione o primeiro contato e com CTRL pressionado selecione os demais')
@@ -136,9 +141,13 @@ def grade():
 	grid_response = AgGrid(pd.read_csv('contatos.csv'), gridOptions=gridOptions, reload_data=False, theme=selected_theme, height=400,fit_columns_on_grid_load=True,allow_unsafe_jscode=True,update_mode=update_mode[6], data_return_mode = return_mode[1], enable_enterprise_modules=False,)
 
 	#endregion
-	st.markdown(literais.css_code_tres_botoes_lado_a_lado, unsafe_allow_html=True)
+	st.markdown("""
+	<style>
+	
+	</style>
+	""", unsafe_allow_html=True)
 	with st.container():
-		if st.button('+',help='adiciona item'):
+		if st.button('➕',help='adiciona item'):
 			try:
 				with open('contatos.csv', "w", encoding="utf-8") as f4:
 					for ctt in grid_response['data']:
@@ -159,7 +168,7 @@ def grade():
 				st.session_state.contatos_salvos = pd.read_csv("contatos.csv")
 				st.experimental_rerun()
 		
-		if st.button('⎌',help='salva itens modificados'):
+		if st.button('💾',help='salva itens modificados'):
 			try:
 				with open('contatos.csv', "w", encoding="utf-8") as f1:
 					for ctt in grid_response['data']:
@@ -175,7 +184,7 @@ def grade():
 				st.session_state.contatos_salvos = pd.read_csv("contatos.csv")
 				st.experimental_rerun()
 		
-		if st.button('🗑',help='remove itens selecionados'):
+		if st.button('🗑️',help='remove itens selecionados'):
 			#st.write(f"{grid_response['selected_rows']}")
 			#data_response = pd.DataFrame(grid_response['data'], index=None)
 			#todos_ctts = data_response.to_csv(index=False)
@@ -230,18 +239,18 @@ def main_call():
 								motorista = webdriver.Chrome(options=opts)
 								cliente = Cliente(motorista)
 							
-							st.session_state["contatos_list"] = cliente.envia_msg(st.session_state.contatos_salvos,content)
+							st.session_state["contatos_list"], st.session_state['black_list'] = cliente.envia_msg(st.session_state.contatos_salvos,content)
 
 							dataframe = pd.DataFrame(st.session_state['contatos_salvos'], index=None)
 							dataframe['contatos'] = st.session_state["contatos_list"]
-							dataframe['ultima conversa'] = st.session_state["ultima_conversa"]
+							
 							st.session_state.contatos_salvos = dataframe
 							dataframe.to_csv('contatos_e_status.csv', index = False)
 							with open('contatos.csv', "w", encoding="utf-8") as f1:
 								for ctt in ['contatos']:
 									f1.write(ctt + '\n')
 							with open('contatos.csv', "a", encoding="utf-8") as f2:
-								contatos_permitidos = set(list(st.session_state.contatos_salvos['contatos'])) -  set (list(st.session_state.black_list))
+								contatos_permitidos = set(list(st.session_state.contatos_salvos['contatos'])) -  set(list(st.session_state.black_list))
 								for ctt in contatos_permitidos:
 									f2.write(ctt + '\n')
 							st.experimental_rerun()
