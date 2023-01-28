@@ -176,7 +176,7 @@ class Cliente:
 			time.sleep(99)
 			return chat_ctts
 
-	def envia_msg(self, contatos_, mensagem):#dataframe['contatos'], text-img.txt
+	def envia_msg(self, contatos_, mensagem):
 		ate_o_fim = True
 		self.google.get(self.URL)
 		self.google.maximize_window()
@@ -184,7 +184,7 @@ class Cliente:
 		lista_contatos_ = []
 		lista_negra = []
 		listar_imgs = re.findall( r'src="data:image/(.*?);base64,(.*?)"', fr'{mensagem}')
-		#remove image tag
+		
 		try:
 			image_tag = re.compile(r'<img.*?>').search(mensagem).group()
 			mensagem = mensagem.replace(image_tag, '')
@@ -192,7 +192,6 @@ class Cliente:
 			print("No image tag found in message.")
 
 		texto_p_enviar = html_to_url_wppedit(mensagem)
-		#lista_imgs_ext = []
 		if os.name == 'nt':
 
 			if bool(listar_imgs):
@@ -201,8 +200,6 @@ class Cliente:
 				contagem = 0
 
 				while ate_o_fim:
-					#self.google.get(self.URL)
-					#
 					if contagem >= len(contatos_['contatos']) - 1: ate_o_fim = False
 					try:
 						url_to_send = f'https://web.whatsapp.com/send/?text={texto_p_enviar}'
@@ -241,8 +238,9 @@ class Cliente:
 							print(f'\n\n\n...do not send again to {contatos_["contatos"][contagem]}')
 						else:
 							ActionChains(self.google).key_down(Keys.CONTROL).send_keys('v').key_up(Keys.CONTROL).perform()
-							btn_envia = wait.until(EC.presence_of_element_located((GetLocator.BOTAO_ENVIA_TXT)))
+							btn_envia = wait.until(EC.presence_of_element_located((GetLocator.BOTAO_ENVIA_IMAGE)))
 							btn_envia.click()
+							time.sleep(5)
 						lista_contatos_.insert(0, contatos_['contatos'][contagem])
 					except Exception as e:
 						print(f"::ERRO:: contato {contatos_['contatos'][contagem]} ::ERRO::")
@@ -343,3 +341,5 @@ class GetLocator(object):
 	BOTAO_ENVIA_CARD = (By.XPATH, '/html/body/div[1]/div/span[2]/div/div/div/div/div/div/div/span/div/div/div')
 
 	BOTAO_ENVIA_TXT = (By.XPATH, '/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[2]/button')
+
+	BOTAO_ENVIA_IMAGE = (By.XPATH, '/html/body/div[1]/div/div/div[2]/div[2]/span/div/span/div/div/div[2]/div/div[2]/div[2]/div/div')
