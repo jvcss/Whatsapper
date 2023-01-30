@@ -1,0 +1,1 @@
+pyarmor obfuscate --exact strings.py

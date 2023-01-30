@@ -5,7 +5,6 @@ if os.name == 'nt':
 	from PIL import Image
 	from base64 import b64decode
 	from io import BytesIO
-
 	def send_to_clipboard(img_path):
 		image = Image.open(img_path)
 		output = BytesIO()
@@ -17,15 +16,9 @@ if os.name == 'nt':
 		win32clipboard.SetClipboardData(win32clipboard.CF_DIB, data)
 import re
 import pandas as pd
-
 from selenium import webdriver
-#from selenium.webdriver.chrome.options import Options as opts_google
-#from selenium.webdriver.firefox.options import Options
-
 from streamlit_quill import st_quill as text_editor
 from st_aggrid import AgGrid, DataReturnMode, GridUpdateMode, GridOptionsBuilder
-
-
 import urllib.parse
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
@@ -397,9 +390,9 @@ if "pc_user" not in st.session_state: st.session_state["pc_user"] = "vitim"
 if "browser_path" not in st.session_state: st.session_state["browser_path"] = fr"C:\Users\{st.session_state['pc_user']}\AppData\Roaming\Mozilla\Firefox\Profiles\{st.session_state['driver_id']}"
 
 #region
-escolha_de_navegador = st.sidebar.radio('', ['Gecko', 'Chromium'], 0)
+escolha_de_navegador = st.sidebar.radio('options', ['Gecko', 'Chromium'], 0,label_visibility='collapsed')
 st.sidebar.markdown('____')
-st.session_state["pc_user"] = st.sidebar.text_input('Nome Usuario', value='vitim')
+st.session_state["pc_user"] = st.sidebar.text_input('Nome Usuario', value='vitim',label_visibility='visible')
 st.session_state["driver_id"] = st.sidebar.text_input('Driver ID', value='eyhgqphi.default-release',help="Para Chrome o nome da pasta perfil de usuario 'Profile 1'\nPara Firefox o nome da pasta gerada 'r4nd0m.default-release'")
 st.sidebar.markdown('____')
 
@@ -446,11 +439,13 @@ st.sidebar.subheader('Lista Negra')
 st.sidebar.write(st.session_state['black_list'])
 
 enable_selection = st.sidebar.checkbox("Selecionar Contatos", value=True, help='Para poder deletar contatos é necessário permitir a seleção')
-selection_mode = st.sidebar.radio("Modo de Seleça", ['single','multiple'], help='Selecione o primeiro contato e com CTRL pressionado selecione os demais')
+selection_mode = st.sidebar.radio("Modo de Seleça", ['single','multiple'], 
+help='Selecione o primeiro contato e com CTRL pressionado selecione os demais',
+label_visibility='visible')
 use_checkbox = st.sidebar.checkbox("Marcador de Linha")
-editavel = st.sidebar.radio("Modo Edição", [True, False], help='Para habilitar duplo click na linha e alterar o conteúdo')
+editavel = st.sidebar.radio("Modo Edição", [True, False], help='Para habilitar duplo click na linha e alterar o conteúdo',label_visibility='visible')
 available_themes = ["streamlit", "light", "dark", "blue", "fresh", "material"]
-selected_theme = st.sidebar.selectbox("Tema", available_themes)
+selected_theme = st.sidebar.selectbox("Tema", available_themes,label_visibility = "visible")
 if st.sidebar.button('Apagar Arquivos'):
 	try:
 		os.remove("contatos.csv")
