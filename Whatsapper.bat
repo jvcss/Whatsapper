@@ -1,1 +1,1 @@
-streamlit run "C:\Users\absol\AbsolutApp\app.py"
+streamlit run "app.py"

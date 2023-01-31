@@ -12,15 +12,19 @@ def get_access():
 		salted_key = response.json()['key']
 		return salted_key
 supersafe = get_machine_id()
-ONE_CLIENT = get_access()
-if supersafe is not None :
-	print('autenticando usuario no servidor')
-	if ONE_CLIENT == 'Unauthorized' :
+try:
+	ONE_CLIENT = get_access()
+
+	if supersafe is not None :
+		print('autenticando usuario no servidor')
+		if ONE_CLIENT == 'Unauthorized' :
+			print('ESSE COMPUTADOR NÃO ESTÁ AUTORIZADO A USAR ESSA APLICAÇÃO, COMPRE A LINCESA entrando em contato com github.com/jvcss')
+			exit()
+		else:
+			print(f'usuario : {ONE_CLIENT}')
+			subprocess.call(["Whatsapper.bat"])
+	else:
 		print('ESSE COMPUTADOR NÃO ESTÁ AUTORIZADO A USAR ESSA APLICAÇÃO, COMPRE A LINCESA entrando em contato com github.com/jvcss')
 		exit()
-	else:
-		print(f'usuario : {ONE_CLIENT}')
-		subprocess.call(["Whatsapper.bat"])
-else:
-	print('ESSE COMPUTADOR NÃO ESTÁ AUTORIZADO A USAR ESSA APLICAÇÃO, COMPRE A LINCESA entrando em contato com github.com/jvcss')
-	exit()
+except Exception as e:
+	print('SERVIDOR FORA DO AR ENTRE EM CONTATO COM github.com/JVCSS')
